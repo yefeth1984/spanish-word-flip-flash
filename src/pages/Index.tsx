@@ -1,15 +1,12 @@
-
 import { FlashCardDeck } from "@/components/FlashCardDeck";
 import { Header } from "@/components/Header";
-
 const Index = () => {
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-100">
+  return <div className="min-h-screen bg-gradient-to-b from-white to-gray-100">
       <Header />
       
       <div className="max-w-4xl mx-auto px-4 pb-12">
         <header className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-3">Spanish Word Flip</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-3">Essential Spanish Words</h1>
           <p className="text-gray-600 max-w-lg mx-auto">Learn Spanish vocabulary with interactive flashcards. Click on a card to reveal its English translation.</p>
         </header>
         
@@ -33,8 +30,6 @@ const Index = () => {
           </p>
         </footer>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
