@@ -1,12 +1,34 @@
 import { FlashCardDeck } from "@/components/FlashCardDeck";
 import { Header } from "@/components/Header";
+import { supabase } from "@/integrations/supabase/client";
+import { useEffect, useState } from "react";
 const Index = () => {
+  const [currentTime, setCurrentTime] = useState<string>("");
+
+  useEffect(() => {
+    const fetchTime = async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke('get-time');
+        if (error) throw error;
+        setCurrentTime(data.formatted);
+      } catch (error) {
+        console.error('Error fetching time:', error);
+        setCurrentTime('Unable to load time');
+      }
+    };
+
+    fetchTime();
+  }, []);
+
   return <div className="min-h-screen bg-gradient-to-b from-white to-gray-100">
       <Header />
       
       <div className="max-w-4xl mx-auto px-4 pb-12">
         <header className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-3">Essential Spanish Words</h1>
+          {currentTime && (
+            <p className="text-sm text-gray-500 mb-3">Server Time: {currentTime}</p>
+          )}
           <p className="text-gray-600 max-w-lg mx-auto">Learn Spanish vocabulary with interactive flashcards. Click on a card to reveal its English translation.</p>
         </header>
         
