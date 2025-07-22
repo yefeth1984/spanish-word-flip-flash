@@ -1,4 +1,4 @@
-import { FlashCardDecks } from "@/components/FlashCardDeck";
+import { FlashCardDeck } from "@/components/FlashCardDeck";
 import { Header } from "@/components/Header";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
