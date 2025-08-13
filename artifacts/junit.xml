@@ -1,0 +1,14 @@
+<testsuites id="" name="" tests="3" failures="0" skipped="0" errors="0" time="2.214026">
+<testsuite name="home.spec.ts" timestamp="2025-08-13T13:53:19.315Z" hostname="chromium" tests="1" failures="0" skipped="0" time="0.225" errors="0">
+<testcase name="homepage loads and shows title" classname="home.spec.ts" time="0.225">
+</testcase>
+</testsuite>
+<testsuite name="home.spec.ts" timestamp="2025-08-13T13:53:19.315Z" hostname="firefox" tests="1" failures="0" skipped="0" time="0.545" errors="0">
+<testcase name="homepage loads and shows title" classname="home.spec.ts" time="0.545">
+</testcase>
+</testsuite>
+<testsuite name="home.spec.ts" timestamp="2025-08-13T13:53:19.315Z" hostname="webkit" tests="1" failures="0" skipped="0" time="0.374" errors="0">
+<testcase name="homepage loads and shows title" classname="home.spec.ts" time="0.374">
+</testcase>
+</testsuite>
+</testsuites>
