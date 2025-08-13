@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { FlashCard } from "@/components/FlashCard";
 import { WordPair, spanishWords } from "@/data/spanishWords";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,9 @@ export function FlashCardDeck() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentWord = spanishWords[currentIndex];
   const totalCards = spanishWords.length;
+
+  // Decide once per mount whether to hide the Random button (33% chance)
+  const hideRandomButton = useMemo(() => Math.random() < 0.33, []);
 
   const handlePrevious = () => {
     setCurrentIndex((prevIndex) => 
@@ -68,14 +71,16 @@ export function FlashCardDeck() {
           </Button>
         </div>
         
-        <Button
-          variant="outline"
-          onClick={handleRandom}
-          className="flex items-center justify-center gap-2 w-full"
-        >
-          <Shuffle className="h-4 w-4" />
-          Random Card
-        </Button>
+        {!hideRandomButton && (
+          <Button
+            variant="outline"
+            onClick={handleRandom}
+            className="flex items-center justify-center gap-2 w-full"
+          >
+            <Shuffle className="h-4 w-4" />
+            Random Card
+          </Button>
+        )}
       </div>
     </div>
   );

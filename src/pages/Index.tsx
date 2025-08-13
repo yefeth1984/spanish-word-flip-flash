@@ -1,6 +1,9 @@
 import { FlashCardDeck } from "@/components/FlashCardDeck";
 import { Header } from "@/components/Header";
+import { maybeThrowRandomError } from "@/lib/randomError";
 const Index = () => {
+  maybeThrowRandomError(0.33);
+  
   return <div className="min-h-screen bg-gradient-to-b from-white to-gray-100">
       <Header />
       
