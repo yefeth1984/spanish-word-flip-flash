@@ -1,73 +1,115 @@
-# Welcome to your Lovable project
+# Spanish Word Flip Flash
 
-## Project info
+A small React + Vite app that helps you learn essential Spanish words with flip cards. Includes unit tests (Vitest), end-to-end tests (Playwright), and a Jenkins pipeline using Docker.
 
-**URL**: https://lovable.dev/projects/75ebac67-87a8-4cfd-9c95-0f89f4ace124
+## Tech Stack
+- Vite + React + TypeScript
+- Tailwind CSS + shadcn UI
+- Vitest (unit tests)
+- Playwright (E2E tests)
+- Jenkins (Docker agent)
 
-## How can I edit this code?
+## Requirements
+- Node.js 20+ (Node 22 recommended)
+- npm 9+
 
-There are several ways of editing your application.
+## Getting Started
+1. Install dependencies:
+   ```bash
+   npm i
+   ```
+2. Start the dev server:
+   ```bash
+   npm run dev
+   ```
+   - Default dev URL: http://localhost:8080
 
-**Use Lovable**
+## Feature Flags
+- Bugs feature flag: enabled by default (random error and optionally hidden Random Card button when enabled in code).
+- Disable bugs explicitly in the browser build by setting:
+  - `VITE_FF_DISABLE_BUGS=true`
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/75ebac67-87a8-4cfd-9c95-0f89f4ace124) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+Example:
+```bash
+VITE_FF_DISABLE_BUGS=true npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Scripts
+- Dev server: `npm run dev`
+- Build: `npm run build`
+- Preview build: `npm run preview`
+- Lint: `npm run lint`
+- Unit tests (Vitest): `npm run test:unit`
+- E2E tests (Playwright):
+  - Headless CI run: `npm run test:e2e`
+  - Headed UI: `npm run test:e2e:ui`
+  - Update snapshots: `npm run test:e2e:update`
+  - Open last HTML report: `npm run test:e2e:report`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## End-to-End Testing (Playwright)
+Playwright is configured in `playwright.config.ts`.
+- Base URL: overridable via `E2E_BASE_URL` (defaults to `http://localhost:8080`).
+- Dev server auto-starts/stops if `E2E_BASE_URL` is the default.
+- Reports:
+  - JUnit: `reports-e2e/junit.xml`
+  - HTML: `reports-e2e/html`
+- On failure: trace, screenshot, and video are retained in the HTML report.
 
-**Use GitHub Codespaces**
+Common commands:
+```bash
+# Run full e2e suite (all browsers) in headless CI mode
+npm run test:e2e
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+# Only Chromium, headed (browser visible)
+VITE_FF_DISABLE_BUGS=true E2E_BASE_URL=http://localhost:8080 \
+  npm run test:e2e -- --project=chromium --headed
 
-## What technologies are used for this project?
+# Slow motion (set once via env)
+SLOW_MO=400 VITE_FF_DISABLE_BUGS=true E2E_BASE_URL=http://localhost:8080 \
+  npm run test:e2e -- --project=chromium --headed
 
-This project is built with:
+# Open the last HTML report
+npm run test:e2e:report
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Data-test IDs are used throughout for stable selectors in E2E tests:
+- `data-testid="card"`, `data-testid="card-inner"`
+- `data-testid="prev-btn"`, `data-testid="next-btn"`, `data-testid="random-btn"`
+- `data-testid="counter"`
 
-## How can I deploy this project?
+## Unit Testing (Vitest)
+- Config: `vitest.config.ts`
+- Example test: `src/lib/utils.test.ts` for the `cn` helper.
 
-Simply open [Lovable](https://lovable.dev/projects/75ebac67-87a8-4cfd-9c95-0f89f4ace124) and click on Share -> Publish.
+Run:
+```bash
+npm run test:unit
+```
 
-## Can I connect a custom domain to my Lovable project?
+## Jenkins (Docker) Pipeline
+A `Jenkinsfile` is included with three stages using a Dockerized Node agent.
+- Agent image: `node:22-alpine`
+- Stages:
+  1. build: `npm ci` + `npm run build`
+  2. test: executes unit tests (Vitest)
+  3. deploy: mocked, prints a success message
 
-Yes, you can!
+Environment variables for Jenkins:
+- `E2E_BASE_URL=http://localhost:8080`
+- `VITE_FF_DISABLE_BUGS=true`
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Note: If you wish to run E2E in Jenkins, add steps to install Playwright browsers and run `npm run test:e2e -- --project=chromium`, then archive `reports-e2e/**` and publish JUnit from `reports-e2e/junit.xml`.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## Build
+```bash
+npm run build
+```
+Outputs to `dist/`.
+
+## Troubleshooting
+- Port 8080 in use: kill existing dev server, e.g. `npx kill-port 8080`.
+- Playwright slow-mo: set `SLOW_MO=400` (ms) env var.
+- Disable bugs for stable runs: set `VITE_FF_DISABLE_BUGS=true`.
+
+## License
+MIT
