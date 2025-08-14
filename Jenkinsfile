@@ -1,4 +1,7 @@
 pipeline {
+  options {
+    ansiColor('xterm')
+  }
   agent {
     docker {
       image 'node:22-alpine'
@@ -8,6 +11,10 @@ pipeline {
   environment {
     E2E_BASE_URL = 'http://localhost:8080'
     VITE_FF_DISABLE_BUGS = 'true'
+    // Enable ANSI colors so Jenkins renders them (requires AnsiColor plugin)
+    FORCE_COLOR = '1'
+    NPM_CONFIG_COLOR = 'always'
+    TERM = 'xterm-256color'
   }
 
   stages {
