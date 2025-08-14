@@ -1,5 +1,6 @@
 
 import { useMemo, useState } from "react";
+import { bugsEnabled } from "@/lib/featureFlags";
 import { FlashCard } from "@/components/FlashCard";
 import { WordPair, spanishWords } from "@/data/spanishWords";
 import { Button } from "@/components/ui/button";
@@ -11,7 +12,7 @@ export function FlashCardDeck() {
   const totalCards = spanishWords.length;
 
   // Decide once per mount whether to hide the Random button (33% chance)
-  const hideRandomButton = useMemo(() => Math.random() < 0.33, []);
+  const hideRandomButton = useMemo(() => bugsEnabled() && Math.random() < 0.33, []);
 
   const handlePrevious = () => {
     setCurrentIndex((prevIndex) => 
@@ -53,18 +54,20 @@ export function FlashCardDeck() {
             variant="outline" 
             onClick={handlePrevious}
             className="flex items-center gap-1"
+            data-testid="prev-btn"
           >
             <ChevronLeft className="h-4 w-4" />
             Previous
           </Button>
           
-          <div className="px-4 py-1 bg-white rounded-full shadow-sm text-sm font-medium text-gray-700">
+          <div className="px-4 py-1 bg-white rounded-full shadow-sm text-sm font-medium text-gray-700" data-testid="counter">
             {currentIndex + 1} / {totalCards}
           </div>
           
           <Button 
             onClick={handleNext}
             className="flex items-center gap-1 bg-red-600 hover:bg-red-700"
+            data-testid="next-btn"
           >
             Next
             <ChevronRight className="h-4 w-4" />
@@ -76,6 +79,7 @@ export function FlashCardDeck() {
             variant="outline"
             onClick={handleRandom}
             className="flex items-center justify-center gap-2 w-full"
+            data-testid="random-btn"
           >
             <Shuffle className="h-4 w-4" />
             Random Card

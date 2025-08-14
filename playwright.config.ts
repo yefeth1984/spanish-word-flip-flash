@@ -2,6 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 // Only baseURL is overridable; defaults to localhost:8080
 const baseURL = process.env.E2E_BASE_URL || 'http://localhost:8080';
+const slowMo = process.env.SLOW_MO ? Number(process.env.SLOW_MO) : 0;
 const startLocalServer = baseURL === 'http://localhost:8080';
 
 export default defineConfig({
@@ -17,7 +18,10 @@ export default defineConfig({
   ],
   use: {
     baseURL,
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+    launchOptions: slowMo ? { slowMo } : undefined,
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
