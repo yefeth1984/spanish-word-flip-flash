@@ -28,10 +28,8 @@ pipeline {
                         }
                     }
                     steps {
-                        // Ensure deps are present in this container too
                         sh 'npm ci'
-                        // Run the pinned Vitest from node_modules
-                        sh 'npm run test -- --reporter=verbose'
+                        sh 'npm run test:unit -- --reporter=verbose'
                     }
                 }
             }
