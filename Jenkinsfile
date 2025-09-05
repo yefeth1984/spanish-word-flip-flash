@@ -31,6 +31,7 @@ pipeline {
                         sh 'npm ci'
                         sh 'npm run test:unit -- --reporter=verbose'
                     }
+                }
                 stage('integration tests'){
                     agent {
                         docker {
@@ -41,7 +42,6 @@ pipeline {
                     steps {
                         sh 'npx playwright test'
                     }
-                }
                 }
             }
         }
