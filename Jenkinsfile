@@ -57,20 +57,19 @@ pipeline {
                 echo 'Mock deployment was successful!'
             }
         }
-        stage('e2e tests'){
-                    agent {
-                        docker {
-                            image 'mcr.microsoft.com/playwright:v1.54.2-jammy'
-                            reuseNode true
-                        }
-                    }
-                    environmeent {
-                        E2E_BASE_URL = "https://spanish-word-cards.netlify.app"
-                        sh 'npx playwright test'
-                    }
-                    steps {
-                        sh 'npx playwright test'
-                    }
+        stage('e2e tests') {
+            agent {
+                docker {
+                    image 'mcr.microsoft.com/playwright:v1.54.2-jammy'
+                    reuseNode true
                 }
+            }
+            environment {
+                E2E_BASE_URL = "https://spanish-word-cards.netlify.app"
+            }
+            steps {
+                sh 'npx playwright test'
+            }
+        }
     }
 }
